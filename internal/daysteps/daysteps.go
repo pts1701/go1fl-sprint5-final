@@ -12,7 +12,8 @@ import (
 )
 
 const (
-	StepLength = 0.65
+	StepLength     = 0.65
+	KiloCorrection = 1000
 )
 
 // создайте структуру DaySteps
@@ -27,17 +28,17 @@ func (ds *DaySteps) Parse(datastring string) (err error) {
 
 	s := strings.Split(datastring, ",")
 	if len(s) != 2 {
-		return errors.New("Некорректное колличество введенных данных")
+		return errors.New("incorrect input data")
 	}
 	steps, err := strconv.Atoi(s[0])
 	if err != nil {
-		return fmt.Errorf("ошибка колличества шагов: %v", err)
+		return fmt.Errorf("incorrect steps input: %v", err)
 	}
 	ds.Steps = steps
 
 	duration, err := time.ParseDuration(s[1])
 	if err != nil {
-		return fmt.Errorf("ошибка длительности тренировки: %v", err)
+		return fmt.Errorf("incorrect duration: %v", err)
 	}
 
 	ds.Duration = duration
@@ -47,6 +48,6 @@ func (ds *DaySteps) Parse(datastring string) (err error) {
 // создайте метод ActionInfo()
 func (ds DaySteps) ActionInfo() (string, error) {
 	calories := spentenergy.WalkingSpentCalories(ds.Steps, ds.Weight, ds.Height, ds.Duration)
-	distance := (float64(ds.Steps) * StepLength) / 1000
-	return fmt.Sprintf("Количество шагов:%d\nДистанция составила %.2f км.\nВы сожгли %.2f ккал.", ds.Steps, distance, calories), nil
+	distance := (float64(ds.Steps) * StepLength) / KiloCorrection
+	return fmt.Sprintf("Количество шагов: %d\nДистанция составила %.2f км.\nВы сожгли %.2f ккал.", ds.Steps, distance, calories), nil
 }

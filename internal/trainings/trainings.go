@@ -23,23 +23,23 @@ type Training struct {
 func (t *Training) Parse(datastring string) (err error) {
 	s := strings.Split(datastring, ",")
 	if len(s) != 3 {
-		return errors.New("Некорректное колличество введенных данных")
+		return errors.New("incorrect input data")
 	}
 	steps, err := strconv.Atoi(s[0])
 	if err != nil {
-		return fmt.Errorf("ошибка колличества шагов: %v", err)
+		return fmt.Errorf("incorrect steps input: %v", err)
 	}
 	t.Steps = steps
 
 	activity := s[1]
 	if activity != "Бег" && activity != "Ходьба" {
-		return errors.New("Неизвестный вид активности")
+		return errors.New("unknown training type")
 	}
 	t.TrainingType = activity
 
 	duration, err := time.ParseDuration(s[2])
 	if err != nil {
-		return fmt.Errorf("ошибка длительности тренировки: %v", err)
+		return fmt.Errorf("incorrect duration: %v", err)
 	}
 	t.Duration = duration
 
@@ -48,6 +48,14 @@ func (t *Training) Parse(datastring string) (err error) {
 
 // создайте метод ActionInfo()
 func (t Training) ActionInfo() (string, error) {
+
+	if t.Duration.Hours() < 0 {
+		return fmt.Sprintf(""), errors.New("negative duration")
+	}
+
+	if t.TrainingType != "Бег" && t.TrainingType != "Ходьба" {
+		return fmt.Sprintf("Неизвестный вид тренировки"), errors.New("unknown training type")
+	}
 
 	dist := spentenergy.Distance(t.Steps)
 
