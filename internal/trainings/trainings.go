@@ -49,7 +49,7 @@ func (t *Training) Parse(datastring string) (err error) {
 // создайте метод ActionInfo()
 func (t Training) ActionInfo() (string, error) {
 
-	if t.Duration.Hours() < 0 {
+	if t.Duration <= 0 {
 		return fmt.Sprintf(""), errors.New("negative duration")
 	}
 
@@ -72,6 +72,6 @@ func (t Training) ActionInfo() (string, error) {
 		calories = spentenergy.WalkingSpentCalories(t.Steps, t.Weight, t.Height, t.Duration)
 	}
 
-	return fmt.Sprintf("Тип тренировки: %s\nДлительность: %.2f. ч.\nДистанция: %.2f км.\nСкорость: %.2f км/ч\nСожгли калорий: %.2f", t.TrainingType, t.Duration.Hours(), dist, speed, calories), nil
+	return fmt.Sprintf("Тип тренировки: %s\nДлительность: %.2f. ч.\nДистанция: %.2f км.\nСкорость: %.2f км/ч\nСожгли калорий: %.2f\n", t.TrainingType, t.Duration.Hours(), dist, speed, calories), nil
 
 }

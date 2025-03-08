@@ -47,7 +47,10 @@ func (ds *DaySteps) Parse(datastring string) (err error) {
 
 // создайте метод ActionInfo()
 func (ds DaySteps) ActionInfo() (string, error) {
+	if ds.Duration.Hours() <= 0 {
+		return fmt.Sprintf(""), errors.New("negative duration")
+	}
 	calories := spentenergy.WalkingSpentCalories(ds.Steps, ds.Weight, ds.Height, ds.Duration)
 	distance := (float64(ds.Steps) * StepLength) / KiloCorrection
-	return fmt.Sprintf("Количество шагов: %d\nДистанция составила %.2f км.\nВы сожгли %.2f ккал.", ds.Steps, distance, calories), nil
+	return fmt.Sprintf("Количество шагов: %d\nДистанция составила %.2f км.\nВы сожгли %.2f ккал.\n", ds.Steps, distance, calories), nil
 }
