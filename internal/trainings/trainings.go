@@ -23,7 +23,7 @@ type Training struct {
 func (t *Training) Parse(datastring string) (err error) {
 	s := strings.Split(datastring, ",")
 	if len(s) != 3 {
-		return errors.New("incorrect input data")
+		return errors.New("incorrect input data\n")
 	}
 	steps, err := strconv.Atoi(s[0])
 	if err != nil {
